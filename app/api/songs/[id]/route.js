@@ -43,6 +43,7 @@ export async function GET(request, context) {
       },
     });
   } catch (error) {
+    console.error(`/api/songs/${context?.params?.id || "<id>"} GET failed:`, error);
     return new Response("Internal Server Error", { status: 500 });
   }
 }

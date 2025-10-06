@@ -31,7 +31,8 @@ export async function GET() {
     });
     return NextResponse.json({ songs });
   } catch (error) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("/api/songs GET failed:", error);
+    return NextResponse.json({ error: "Failed to fetch songs" }, { status: 500 });
   }
 }
 
@@ -91,7 +92,7 @@ export async function POST(request) {
       },
     });
   } catch (error) {
-    console.error("Upload error:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.error("/api/songs POST failed:", error);
+    return NextResponse.json({ error: "Failed to upload song" }, { status: 500 });
   }
 }
