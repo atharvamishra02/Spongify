@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Sidebar from "./components/Sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -20,9 +21,17 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}
       >
-        {children}
+        <div className="flex min-h-screen">
+          {/* Sidebar renders both mobile trigger/overlay and desktop fixed nav */}
+          <Sidebar />
+
+          {/* Main content - full width on mobile, shifted right on desktop */}
+          <main className="flex-1 bg-white dark:bg-black lg:ml-64">
+            {children}
+          </main>
+        </div>
       </body>
     </html>
   );
