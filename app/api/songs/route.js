@@ -39,10 +39,10 @@ export async function GET() {
 export async function POST(request) {
   try {
     const formData = await request.formData();
-    const name = formData.get('name');
-    const artist = formData.get('artist');
-    const audioFile = formData.get('audio');
-    const imageFile = formData.get('image');
+  const name = formData.get('name');
+  const artist = formData.get('artist');
+  const audioFile = formData.get('audio');
+  const imageFile = formData.get('image');
     const category = formData.get('category') || null;
     const language = formData.get('language') || null;
 
@@ -73,7 +73,7 @@ export async function POST(request) {
       createdAt: new Date(),
     };
 
-    const result = await db.collection("songs").insertOne(song);
+  const result = await db.collection("songs").insertOne(song);
 
     // Prepare minimal JSON-safe response, convert image to base64
     let imageBase64 = null;
@@ -93,6 +93,6 @@ export async function POST(request) {
     });
   } catch (error) {
     console.error("/api/songs POST failed:", error);
-    return NextResponse.json({ error: "Failed to upload song" }, { status: 500 });
+    return NextResponse.json({ error: `Failed to upload song: ${error?.message || 'unknown error'}` }, { status: 500 });
   }
 }
