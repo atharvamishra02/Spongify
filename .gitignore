@@ -1,3 +1,12 @@
+.env
+.env.local
+.env.*.local
+.vercel
+.next
+node_modules
+dist
+out
+*.log
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
@@ -39,3 +48,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# ignore
+.node_modules
+

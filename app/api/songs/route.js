@@ -1,3 +1,6 @@
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 import { NextResponse } from "next/server";
 import { connectToDatabase } from "../../../lib/mongodb";
 
@@ -48,6 +51,18 @@ export async function POST(request) {
 
     if (!name || !audioFile) {
       return NextResponse.json({ error: "Missing name or audio file" }, { status: 400 });
+    }
+
+    // Enforce upload size limits to avoid Vercel function body limits (~4.5-10MB depending on plan)
+    const maxAudioBytes = 4_500_000; // ~4.5MB
+    const maxImageBytes = 2_000_000; // ~2MB
+    const audioSize = typeof audioFile.size === 'number' ? audioFile.size : 0;
+    const imageSize = imageFile && typeof imageFile.size === 'number' ? imageFile.size : 0;
+    if (audioSize > maxAudioBytes) {
+      return NextResponse.json({ error: `Audio file too large (${Math.round(audioSize/1_000_000)}MB). Max ~${Math.round(maxAudioBytes/1_000_000)}MB on this server.` }, { status: 413 });
+    }
+    if (imageFile && imageSize > maxImageBytes) {
+      return NextResponse.json({ error: `Image too large (${Math.round(imageSize/1_000_000)}MB). Max ~${Math.round(maxImageBytes/1_000_000)}MB.` }, { status: 413 });
     }
 
     const { db } = await connectToDatabase();
